@@ -17,7 +17,7 @@ class SkillzClassifier():
 		""" Herlig naiivt". """
 		skillz = text.split(",")
 		if len(skillz) == 1:
-			return self.format_ting_Til_skikkelig_format_her(skillz[0])
+			return self.cssname(skillz[0])
 		else:
 			return "unclassified"
 
@@ -25,7 +25,9 @@ class SkillzClassifier():
 	def classify(self, text):
 		"""Group membership classification"""
 		labels = {}
-		skillz = [s.strip() for s in text.split(",")]
+		if text == "":
+			labels["unclassified"] = 1
+		skillz = self.parse_skills(text)
 		for skill in skillz:
 			for group in self.groups:
 				if skill in self.groups[group]:
@@ -38,7 +40,25 @@ class SkillzClassifier():
 		return labels
 
 
-	def format_ting_Til_skikkelig_format_her(self, classstr):
+	def parse_skills(self, text):
+		""" string with comma separated skills --> list of skills. """
+		return [s.strip() for s in text.split(",")]
+
+
+	def label(self, skill):
+		""" labels a single skill from the classifier 
+			see self.groups for mappings.
+		"""
+		return self.classify(skill).keys()[0]
+
+
+	def label_skillset(self, text):
+		""" Process and classify skills individually. """
+		skills = self.parse_skills(text)
+		skills_and_labels = [(self.label(skill), skill) for skill in skills]
+		return skills_and_labels
+
+	def cssname(self, classstr):
 		""" 2d art -> 2d_art """
 		return classstr.replace(" ", "_")
 
@@ -46,9 +66,10 @@ class SkillzClassifier():
 if __name__ == '__main__':
 	c = SkillzClassifier()
 	print c.classify("programming, h")
-	print c.classify("programming")
+	
 	print c.classify("2d art")
-	print c.classify("programming")
+	print c.classify("")
+	
 
 
 	print c.classify("audio, hardware, marketing, music, programming, project management, web design")
