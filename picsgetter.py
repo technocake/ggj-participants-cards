@@ -8,10 +8,13 @@ import hashlib
 
 def username(Username):
 	""" 
-		FB-registered users has a little twitchy nicky thingy
+		1. FB-registered users has a little twitchy nicky thingy
 		basically Name Surname => name-surname 
+
+		2. all usernames are lowercased in the url
+		3. _ is allowed but stripped from the username in the url.
 	"""
-	return Username.lower().replace(" ", "-")
+	return Username.lower().replace("_", "").replace(" ", "-")
 
 
 def yes_I_said_fetch_profile_picture(email):
