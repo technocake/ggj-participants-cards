@@ -49,7 +49,7 @@ class SkillzClassifier():
 		""" labels a single skill from the classifier 
 			see self.groups for mappings.
 		"""
-		return self.classify(skill).keys()[0]
+		return list(self.classify(skill))[0]
 
 
 	def label_skillset(self, text):
@@ -65,11 +65,11 @@ class SkillzClassifier():
 
 if __name__ == '__main__':
 	c = SkillzClassifier()
-	print c.classify("programming, h")
+	print(c.classify("programming, h"))
 	
-	print c.classify("2d art")
-	print c.classify("")
+	print(c.classify("2d art"))
+	print(c.classify(""))
 	
 
 
-	print c.classify("audio, hardware, marketing, music, programming, project management, web design")
+	print(c.classify("audio, hardware, marketing, music, programming, project management, web design"))

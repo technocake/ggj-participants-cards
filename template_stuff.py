@@ -93,16 +93,15 @@ template = """
 
 
 def render_classifications(classifications):
-	""" Renders a list with css classes for the classifications 
+	""" Renders a list with css classes for the classificatiopns 
 		of a participant
 	"""
-	return "\n".join(
-		["<li class='licls_%s'>%s</li>" % (lbl, lbl) for lbl in classifications])
+	return "\n".join(["<li class='licls_%s'>%s</li>" % (lbl, lbl) for lbl in classifications])
 
-	
+
 def render_skills(skills_and_labels):
 	"""
-		Renders the list of skills with stylized classes. 
+		Renders the list of skills with stylized classes.
 	"""
 	rendered_list = []
 	for lbl, skill in skills_and_labels:		

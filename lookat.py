@@ -23,7 +23,7 @@ with open("jammers.csv") as csvfile:
 			jammer["classifications"] = render_classifications(classifications)
 			skills_and_labels = c.label_skillset(jammer["Skills"])
 			jammer["Allskills"] = render_skills(skills_and_labels)
-			#Picture time
+			# Picture time
 			jammer["Picture"] = picsgetter.find_or_create_picture(jammer)
 			htmlfile.write( template % jammer )
 		
