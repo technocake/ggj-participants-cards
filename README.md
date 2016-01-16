@@ -2,6 +2,8 @@
 
 Generates a sweet html file that can be printed with a card for each jammer in a global game jam site.
 
+![alt screenshot](https://raw.github.com/technocake/ggj-participants-cards/master/screenshot.png)
+
 #Input
   jammers.csv (downloaded from organizing site)
   put it in the same folder as this program-suite.
