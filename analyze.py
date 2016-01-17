@@ -1,10 +1,10 @@
 #coding: utf-8
 import csv
 
-def load(f):
+def load(f, *args, **kwargs):
 	with open("jammers.csv") as csvfile:
 		jammers = csv.DictReader(csvfile)	
-		return f(jammers)
+		return f(jammers, *args, **kwargs)
 
 
 def distribution(jammers):

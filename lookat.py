@@ -4,7 +4,7 @@ import csv
 import re
 import picsgetter
 import classifier
-from template_stuff import style, template, render_skills, render_classifications
+from template_stuff import style, template, render_skills, render_classifications, render_role
 
 # Instantiating our skills classifier, born
 # at Pilsner and Programming in Bergen #3 2016.
@@ -18,8 +18,8 @@ with open("jammers.csv") as csvfile:
 		
 		for jammer in jammers:			
 			# Classifying the jammer role
-			jammer["class"] = "cls_" + c.simply_classify(jammer["Skills"])
 			classifications = c.classify(jammer["Skills"])
+			jammer["class"] = render_role(classifications)
 			jammer["classifications"] = render_classifications(classifications)
 			skills_and_labels = c.label_skillset(jammer["Skills"])
 			jammer["Allskills"] = render_skills(skills_and_labels)

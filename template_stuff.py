@@ -1,3 +1,21 @@
+role_colors = {
+		"unclassified": "Gray",
+		"3D": "FireBrick",
+		"2D": "Red",
+		"Programming": "MidnightBlue",
+		"Sound": "Yellow",
+		"Other": "Purple"
+	}
+
+role_text_colors = {
+		"t_unclassified": "Black",
+		"t_3D": "Black",
+		"t_2D": "Black",
+		"t_Programming": "White",
+		"t_Sound": "Black",
+		"t_Other": "White"
+}
+
 style = """
 	<style>
 		.jammer{
@@ -20,47 +38,42 @@ style = """
 			content: ''; 
 		}
 
-		.cls_unclassified { border-color: Cornsilk; }		
-		.cls_music { border-color: purple; }		
-		.cls_programming { border-color: yellow; }		
-		.cls_marketing { border-color: black; }		
-		.cls_2d_art { border-color: pink;}		
-		.cls_game_design { border-color: green;}		
-		.cls_game_development{border-color: orange;}		
-		.cls_project_management{border-color: red;}		
-		.cls_story_and_narrative{ border-color: orange; }		
-		.cls_management{border-color: LightSalmon;}		
-		.cls_hardware{ border-color: light-green; }		
-		.cls_audio{ border-color: dark-purple;}		
-		.cls_web_design{ opacity: 0.3; border-color: blue; }
-		
 
+		.cls_unclassified,
+		.cls_unclassified:before { border-color: %(unclassified)s; }
+		.cls_Sound, .cls_Sound:before {	border-color:%(Sound)s; }
+		.cls_2D, .cls_2D:before { border-color:%(2D)s; }
+		.cls_3D, .cls_3D:before { border-color:%(3D)s; }
+		.cls_Programming, 
+		.cls_Programming:before { border-color:%(Programming)s; }
+		.cls_Other, .cls_Other:before {border-color:%(Other)s; }
+		 
 
-		.cls_unclassified:before { border-color: Cornsilk; }
-		.cls_music:before { border-color: purple; }
-		.cls_programming:before { border-color: yellow; }
-		.cls_marketing:before { border-color: black; }
-		.cls_2d_art:before { border-color: pink;}
-		.cls_game_design:before { border-color: green;}
-		.cls_game_development:before { border-color: orange;}
-		.cls_project_management:before { border-color: gray;}
-		.cls_story_and_narrative:before { border-color: green;}
-		.cls_management:before { border-color: LightSalmon;}
-		.cls_hardware:before { border-color: light-green;}
-		.cls_audio:before { border-color: dark-gray;}
-		.cls_web_design:before { opacity: 0.5; border-color: blue;}
-		
-		li { list-style: none; display: inline-block; border-radius: 5px; background-color: LightSalmon; padding: 4px; margin: 2px;}
+		li { list-style: none; display: inline-block; border-radius: 5px;  padding: 4px; margin: 2px;}
 
-		.licls_Sound{ background-color: Lime;}
-		.licls_2D{background-color: yellow;}
-		.licls_3D{}
-		.licls_Programming{ background-color: AliceBlue;}
-		.licls_Other{}
+		.licls_unclassified{ 	
+			background-color: %(unclassified)s; 
+			color: %(t_unclassified)s; }
+		.licls_Sound{ 	
+			background-color: %(Sound)s; 
+			color: %(t_Sound)s; }
+		.licls_2D{
+			background-color: %(2D)s; 
+			color: %(t_2D)s; }
+		.licls_3D{ 		
+			background-color: %(3D)s; 
+			color: %(t_3D)s; }
+		.licls_Programming{ 
+			background-color: %(Programming)s; 
+			color: %(t_Programming)s;}
+		.licls_Other{ 
+			background-color: %(Other)s; 
+			color: %(t_Other)s; }
 
 
 		body {
 			text-align: center;
+			font-family: Arial;
 		}
 		ul {
 			margin: 0;
@@ -71,7 +84,7 @@ style = """
 			margin: 40px;
 		}
 		</style>
-"""
+""" % dict(list(role_colors.items()) + list(role_text_colors.items()))
 
 template = """
 	<div class="jammer %(class)s">
@@ -91,6 +104,10 @@ template = """
 	</div>
 	"""
 
+def render_role(classifications):
+	""" Picks the first class. and renders it.  """
+	role = list(classifications)[0]
+	return "cls_" + role
 
 def render_classifications(classifications):
 	""" Renders a list with css classes for the classificatiopns 
