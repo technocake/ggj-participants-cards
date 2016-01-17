@@ -2,7 +2,11 @@
 import csv
 
 def load(f, *args, **kwargs):
-	with open("jammers.csv") as csvfile:
+	""" Wrapper functions that opens a csv file and calls
+		a function f with that csv stream object as parameter"""
+	filename = kwargs["filename"] if "filename" in kwargs else "jammers.csv"
+	print (filename)
+	with open(filename) as csvfile:
 		jammers = csv.DictReader(csvfile)	
 		return f(jammers, *args, **kwargs)
 
@@ -74,11 +78,11 @@ def animation_and(jammers):
 
 
 if __name__ == '__main__':
-	print load(distribution)
-	print 
-	print load(dist_of_each)
-	print load(animation_and)
+	print( load(distribution))
+	
+	print(load(dist_of_each))
+	print (load(animation_and))
 
 #	combos = load(combination_distribution)
 #	for combo in combos:
-#		print combos[combo], "::::::::", combo
+#		print( combos[combo], "::::::::", combo )

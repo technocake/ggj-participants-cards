@@ -14,8 +14,9 @@ def username(Username):
 
 		2. all usernames are lowercased in the url
 		3. _ is allowed but stripped from the username in the url.
+		4. sometimes there are leading / trailing spaces in input. feush
 	"""
-	return Username.lower().replace("_", "").replace(" ", "-")
+	return Username.strip().lower().replace("_", "").replace(" ", "-")
 
 
 def yes_I_said_fetch_profile_picture(email):
