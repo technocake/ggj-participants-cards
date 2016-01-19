@@ -1,7 +1,7 @@
 #coding: utf-8
 from analyze import load
 from picsgetter import username
-
+import requests
 
 def dict_jammers(list_of_jammers, key="Username", keyformat=username):
 	""" Converts a list of jammers to a dict of jammers with key Username (default) """
@@ -9,6 +9,13 @@ def dict_jammers(list_of_jammers, key="Username", keyformat=username):
 	for jammer in list_of_jammers:
 		jammers[keyformat(jammer[key])] = jammer
 	return jammers
+
+
+def update_formjammers():
+	from config import gforms_url
+	r = requests.get(gforms_url)
+	if r.status_code == 200:
+		print(r.content)
 
 
 def find_waiting_people(formjammers, filename, jammers, fieldnames):
@@ -86,3 +93,5 @@ if __name__ == '__main__':
 
 	print()
 	print( gf_fieldnames() )
+
+	update_formjammers()
