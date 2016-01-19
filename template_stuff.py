@@ -104,10 +104,10 @@ template = """
 	</div>
 	"""
 
-def render_role(classifications):
+def render_role(main_role):
 	""" Picks the first class. and renders it.  """
-	role = list(classifications)[0]
-	return "cls_" + role
+	return "cls_" + main_role
+
 
 def render_classifications(classifications):
 	""" Renders a list with css classes for the classificatiopns 

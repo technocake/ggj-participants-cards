@@ -5,9 +5,14 @@ def load(f, *args, **kwargs):
 	""" Wrapper functions that opens a csv file and calls
 		a function f with that csv stream object as parameter"""
 	filename = kwargs["filename"] if "filename" in kwargs else "jammers.csv"
-	print (filename)
+	
 	with open(filename) as csvfile:
-		jammers = csv.DictReader(csvfile)	
+		if "fieldnames" in kwargs:
+			jammers = csv.DictReader(csvfile, fieldnames=kwargs["fieldnames"])
+			#Skipping header line
+			next(jammers)
+		else:
+			jammers = csv.DictReader(csvfile)	
 		return f(jammers, *args, **kwargs)
 
 

@@ -3,6 +3,7 @@
 import csv
 import re
 import picsgetter
+from picsgetter import username
 import classifier
 from template_stuff import style, template, render_skills, render_classifications, render_role
 
@@ -19,7 +20,11 @@ with open("jammers.csv") as csvfile:
 		for jammer in jammers:			
 			# Classifying the jammer role
 			classifications = c.classify(jammer["Skills"])
-			jammer["class"] = render_role(classifications)
+			main_role = c.main_role(jammer["Skills"])
+			if username(jammer["Username"]) == "technocake":
+				# Jupp, I am first a composer from now on
+				main_role = "Sound"
+			jammer["class"] = render_role(main_role)
 			jammer["classifications"] = render_classifications(classifications)
 			skills_and_labels = c.label_skillset(jammer["Skills"])
 			jammer["Allskills"] = render_skills(skills_and_labels)

@@ -3,21 +3,45 @@ from analyze import load
 from picsgetter import username
 
 
+def dict_jammers(list_of_jammers, key="Username", keyformat=username):
+	""" Converts a list of jammers to a dict of jammers with key Username (default) """
+	jammers = {}
+	for jammer in list_of_jammers:
+		jammers[keyformat(jammer[key])] = jammer
+	return jammers
+
+
+def find_waiting_people(formjammers, filename, jammers, fieldnames):
+		""" Finds jammers waiting for a seat """
+		formjammers_full = [jammer for jammer in formjammers]
+		
+		# List of usernames from both camps
+		formjammers = [username(jammer['Username']) for jammer in formjammers_full if username(jammer['Username']) != ""]
+		jammers = [username(jammer['Username']) for jammer in jammers]
+		
+
+		# Match usernames in both camps
+		for signed_up_jammer in jammers:
+			if signed_up_jammer in formjammers:
+				formjammers.remove(signed_up_jammer)
+
+
+		#Convert the list of jammers from the google forms to a dict of jammers
+		formjammers_dict = dict_jammers(formjammers_full)
+		#Fetch full jammer info from the usernames
+		waiting_jammers = [formjammers_dict[waiting_jammer] for waiting_jammer in formjammers]
+		
+
+		return formjammers, waiting_jammers
+
+
 def venteliste(jammers, signupfile):
 	""" Matches jammers in the ggj provided list of jammers and
 		the google forms provided list of jammers """
 	
-	def find_waiting_people(formjammers, filename, jammers):
-		""" Finds jammers waiting for a seat """
-		formjammers = [username(jammer['Hva er kontoen din / ditt username på Globalgamejam.org?']) for jammer in formjammers]
-		jammers = [username(jammer['Username']) for jammer in jammers]
-		
-		for signed_up_jammer in jammers:
-			if signed_up_jammer in formjammers:
-				formjammers.remove(signed_up_jammer)
-		return formjammers
-	
-	venteliste = load(find_waiting_people, filename=signupfile, jammers=jammers)
+	venteliste = load(find_waiting_people, filename=signupfile, jammers=jammers, fieldnames=gf_fieldnames())
+
+
 	return venteliste
 
 
@@ -37,6 +61,7 @@ def gf_fieldnames(fn="forms-fields.txt"):
 			fieldnames.append(fieldname.split(":")[0])
 		return fieldnames
 
+
 def emails(jammers):
 	for jammer in jammers:
 		print( jammer["Email"])
@@ -51,11 +76,13 @@ def whoose_account(jammers, email):
 def how_many(jammers):
 	return len(["" for j in jammers])
 
+
+
 if __name__ == '__main__':
 	load(whoose_account, "email@participant.com")
 	#load(emails)
 	print( load(how_many) )
-	print( load(venteliste, "jammerskillz.csv") )
+	print( load(venteliste, "jammerskillz.csv")[0] )
 
-	print(username("Hanne Ivarsen"))
+	print()
 	print( gf_fieldnames() )
