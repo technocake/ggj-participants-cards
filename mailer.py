@@ -3,7 +3,7 @@ import smtplib
 
 ticket_offer_from_waiting_list = """
 
-	Hei %(Full Name)s ! Gratulerer med plass på Bergen Game Jam!
+	Hei %(Full name)s ! Gratulerer med plass på Bergen Game Jam!
 
 	Du har stått på venteliste, og nå har vi akkurat funnet en ledig plass til deg. 
 
@@ -55,6 +55,8 @@ def send_mail(to, subj, msg):
 	server.quit()
 
 
+def invitation_message(jammer):
+	return mail(ticket_offer_from_waiting_list, jammer)
 
 
 def grant_tickets():

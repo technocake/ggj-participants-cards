@@ -52,23 +52,23 @@ style = """
 		li { list-style: none; display: inline-block; border-radius: 5px;  padding: 4px; margin: 2px;}
 
 		.licls_unclassified{ 	
-			background-color: %(unclassified)s; 
-			color: %(t_unclassified)s; }
+			background-color: %(unclassified)s !important; 
+			color: %(t_unclassified)s !important; }
 		.licls_Sound{ 	
-			background-color: %(Sound)s; 
-			color: %(t_Sound)s; }
+			background-color: %(Sound)s !important; 
+			color: %(t_Sound)s !important; }
 		.licls_2D{
-			background-color: %(2D)s; 
-			color: %(t_2D)s; }
+			background-color: %(2D)s !important; 
+			color: %(t_2D)s !important; }
 		.licls_3D{ 		
-			background-color: %(3D)s; 
-			color: %(t_3D)s; }
+			background-color: %(3D)s !important; 
+			color: %(t_3D)s !important; }
 		.licls_Programming{ 
-			background-color: %(Programming)s; 
-			color: %(t_Programming)s;}
+			background-color: %(Programming)s !important; 
+			color: %(t_Programming)s !important;}
 		.licls_Other{ 
-			background-color: %(Other)s; 
-			color: %(t_Other)s; }
+			background-color: %(Other)s !important; 
+			color: %(t_Other)s !important; }
 
 
 		body {
@@ -94,7 +94,7 @@ template = """
 		<ul>
 			%(classifications)s
 		</ul>
-		
+		<h3>T-shirt size: %(Size)s</h3>
 		<img src="%(picture)s" />
 		
 		<h3>Skills:</h3>
@@ -109,7 +109,18 @@ def render_jammer(jammer):
 	setattr(jammer, "class", render_role(jammer.main_role))
 	setattr(jammer, "classifications", render_classifications(jammer.classifications))
 	setattr(jammer, "allskills", render_skills(jammer.skills_and_labels))
+	if not hasattr(jammer, "Experience"):
+		jammer.Experience = ""
+	if not hasattr(jammer, "Size"):
+		jammer.Size="?"
 	return template % jammer.__dict__
+
+
+def render_jammers(jammers):
+	""" assembles this whole thing together """
+	yield "<meta charset=\"utf-8\">\n\r %s" % style
+	for jammer in jammers:
+		yield render_jammer(jammer) 
 
 
 def render_role(main_role):

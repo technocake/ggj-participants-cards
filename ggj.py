@@ -3,6 +3,10 @@
 import picsgetter
 import classifier
 from collections import OrderedDict
+try:
+	import cPickle as cpickle
+except:
+	import cpickle
 
 # Instantiating our skills classifier, born
 # at Pilsner and Programming in Bergen #3 2016.
@@ -10,19 +14,36 @@ c = classifier.SkillzClassifier()
 
 
 class JamSite():
-	jammers = OrderedDict()
+	def __init__(self):
+		self.jammers = OrderedDict()
+		# computer says no, human says yes.
+		# This is a list of human made overriding changes
+		# per jammer. It will be applied last in the 
+		# import cascade, and thus have the highest priority.
+		self.administrated_jammers = OrderedDict()
 
 
-	def mergeinsert(self, other_list_of_jammers):
-		""" Merging a list with additional / overlapping jammer info """
+	def mergeinsert(self, other_list_of_jammers, accumulate=True):
+		""" Merging a the jamsites jammers with additional / overlapping jammer info """
 		for jammer in other_list_of_jammers:
 			if jammer in self.jammers:
 				# overwriting new data
 				self.jammers[jammer.username].update(jammer)
-				self.jammers[jammer.username].accumulate()
-				#self.jammers[jammer.username] = jammer
 			else:
-				self.jammers[jammer.username] = jammer.accumulate()
+				self.jammers[jammer.username] = jammer
+			if accumulate:	
+				# Learn some more about this jammer now with this 
+				# new knowledge
+				self.jammers[jammer.username].accumulate()
+
+	def apply_human(self):
+		""" Last step is to overwrite with human changes """
+		self.apply_human_decissions(self.administrated_jammers.values())
+
+
+	def apply_human_decissions(self, list_of_jammers):
+		self.mergeinsert(list_of_jammers, accumulate=False)
+
 
 
 	def waiting_list(self):
@@ -34,11 +55,40 @@ class JamSite():
 		return wait_list
 
 
+	def save(self, filename="jamsite.pickle"):
+		""" sideeffects """
+		with open(filename, "wb") as statefile:
+			cpickle.dump(self, statefile)
+
+
+	def serialize(self):
+		"""used to store state """
+		return cpickle.dumps(self)
+
+
+	@staticmethod
+	def load(filename="jamsite.pickle"):
+		""" sideeffects """
+		with open(filename, "rb") as statefile:
+			jamsite = cpickle.load(statefile)
+			#self.jammers = jamsite.jammers
+			#self.administrated_jammers = jamsite.administrated_jammers
+		return jamsite
+
+
+	def reset(self, all=False):
+		""" Empties the jammer list, but keeps the human made changes """
+		self.jammers = OrderedDict()
+		if all:
+			self.administrated_jammers = OrderedDict()
+		return self
+
 class Jammer():
+	__docstring__ = """ Jammer class, must have Username as a minimum. """
 	def __init__(self, **kwargs):
 		""" populates itself from kwargs """
-		self.Experience = ""
-		
+		#self.Experience = ""
+		#self.Size = "?"
 		if 'Username' not in kwargs:
 			print("Missing Username field")
 			raise Exception
@@ -47,21 +97,6 @@ class Jammer():
 			setattr(self, key, value)
 
 
-	def __repr__(self):
-		return self.username
-	
-
-	def __hash__(self):
-		""" Used for comparison with other jammers. normalized username is the hash. """
-		return hash(self.username)
-
-
-	def __eq__(self, other):
-		""" hmmm. using hash or not. that is the question """
-		try:
-			return self.username == other.username
-		except:
-			return self.username == other
 
 
 	@property
@@ -74,7 +109,7 @@ class Jammer():
 	def has_ticket(self):
 	    return hasattr(self, "ticket") and self.ticket == True
 	
-
+	
 	def update(self, updated_jammer):
 		"""
 			When agregating data from multiple sources, this
@@ -84,7 +119,6 @@ class Jammer():
 		# Step 1, add or overwrite with updated data
 		for key in updated_jammer.__dict__:
 			self.__dict__[key] = updated_jammer.__dict__[key]
-		# Step 2, accumulate info
 		return self
 
 
@@ -112,6 +146,32 @@ class Jammer():
 		# Profile picture
 		self.picture = picsgetter.find_or_create_picture(self.__dict__)
 		return self
+
+
+	def __repr__(self):
+		return self.username
+	
+
+	def __hash__(self):
+		""" Used for comparison with other jammers. normalized username is the hash. """
+		return hash(self.username)
+
+
+	def __getitem__(self, key):
+		""" Use the jammer as a dict :) """
+		return getattr(self, key)
+
+
+	def __eq__(self, other):
+		""" hmmm. using hash or not. that is the question """
+		try:
+			return self.username == other.username
+		except:
+			# explanation. it compares itself with a string username.
+			# return self.username == other
+			# hack to make it possible to compare keys in a dict of jammers
+			# with a jammer object.
+			return self.username == other
 
 
 if __name__ == '__main__':

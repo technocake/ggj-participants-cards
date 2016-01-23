@@ -17,7 +17,9 @@ def fetch_gforms_csv():
 		In order for this to work, the response sheet must be published to the web as csv and the link must be put in config.py under the variable gforms_url.
 	"""
 	from config import gforms_url
-	r = requests.get(gforms_url)
+	from random import randrange
+	#cache avoidance.
+	r = requests.get(gforms_url + "&%s"%str(randrange(1000000)) )
 	if r.status_code == 200:
 		return r.iter_lines()
 
