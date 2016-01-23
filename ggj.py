@@ -2,8 +2,11 @@
 #coding: utf-8
 import picsgetter
 import classifier
-c = classifier.SkillzClassifier()
 from collections import OrderedDict
+
+# Instantiating our skills classifier, born
+# at Pilsner and Programming in Bergen #3 2016.
+c = classifier.SkillzClassifier()
 
 
 class JamSite():
@@ -38,7 +41,7 @@ class Jammer():
 		
 		if 'Username' not in kwargs:
 			print("Missing Username field")
-			raise
+			raise Exception
 		for key in kwargs:
 			value = kwargs[key]
 			setattr(self, key, value)
@@ -47,6 +50,7 @@ class Jammer():
 	def __repr__(self):
 		return self.username
 	
+
 	def __hash__(self):
 		""" Used for comparison with other jammers. normalized username is the hash. """
 		return hash(self.username)
@@ -59,11 +63,13 @@ class Jammer():
 		except:
 			return self.username == other
 
+
 	@property
 	def username(self):	
 		""" Property and static hack to just keep it procedural. why not."""
 		return Jammer.format_username(self.Username)
 	
+
 	@property
 	def has_ticket(self):
 	    return hasattr(self, "ticket") and self.ticket == True
@@ -80,6 +86,7 @@ class Jammer():
 			self.__dict__[key] = updated_jammer.__dict__[key]
 		# Step 2, accumulate info
 		return self
+
 
 	@staticmethod
 	def format_username(Username):
@@ -105,6 +112,7 @@ class Jammer():
 		# Profile picture
 		self.picture = picsgetter.find_or_create_picture(self.__dict__)
 		return self
+
 
 if __name__ == '__main__':
 	j = Jammer(Username="Technocake")

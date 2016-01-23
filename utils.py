@@ -11,11 +11,15 @@ def dict_jammers(list_of_jammers, key="Username", keyformat=username):
 	return jammers
 
 
-def update_formjammers():
+def fetch_gforms_csv():
+	""" Gets a fresh copy of the Google Forms Response file and treats it like a file object. 
+
+		In order for this to work, the response sheet must be published to the web as csv and the link must be put in config.py under the variable gforms_url.
+	"""
 	from config import gforms_url
 	r = requests.get(gforms_url)
 	if r.status_code == 200:
-		print(r.content)
+		return r.iter_lines()
 
 
 def find_waiting_people(formjammers, filename, jammers, fieldnames):
