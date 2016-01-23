@@ -63,9 +63,7 @@ def gf_fieldnames(fn="forms-fields.txt"):
 
 	"""
 	with open(fn) as f:
-		fieldnames = []
-		for fieldname in f:
-			fieldnames.append(fieldname.split(":")[0])
+		fieldnames = [fieldname.split(":")[0] for fieldname in f]
 		return fieldnames
 
 

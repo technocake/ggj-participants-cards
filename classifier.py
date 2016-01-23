@@ -90,6 +90,8 @@ class SkillzClassifier():
 		skills_and_labels = [(self.label(skill), skill) for skill in skills]
 		return skills_and_labels
 
+
+	#move to templatestuff plix.
 	def cssname(self, classstr):
 		""" 2d art -> 2d_art """
 		return classstr.replace(" ", "_")

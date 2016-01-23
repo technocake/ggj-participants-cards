@@ -90,19 +90,27 @@ template = """
 	<div class="jammer %(class)s">
 		<h2>%(Username)s</h2>
 		<h3>%(Full name)s</h3>
-		
+		<p class="experience">%(Experience)s</p>
 		<ul>
 			%(classifications)s
 		</ul>
 		
-		<img src="%(Picture)s" />
+		<img src="%(picture)s" />
 		
 		<h3>Skills:</h3>
 		<ul>
-			%(Allskills)s
+			%(allskills)s
 		</ul>
 	</div>
 	"""
+
+def render_jammer(jammer):
+	""" Takes a fully propagated jammer and renders """
+	setattr(jammer, "class", render_role(jammer.main_role))
+	setattr(jammer, "classifications", render_classifications(jammer.classifications))
+	setattr(jammer, "allskills", render_skills(jammer.skills_and_labels))
+	return template % jammer.__dict__
+
 
 def render_role(main_role):
 	""" Picks the first class. and renders it.  """

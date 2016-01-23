@@ -3,16 +3,16 @@ Hva er dine egenskaper innen Musikk/Lyd?
 Hva er dine egenskaper innen 3D Grafikk?
 Hva er dine egenskaper innen 2D Grafikk?
 Hva er dine egenskaper innen Programmering?
-Erfaring:Fortell kort om din erfaring og dine egenskaper
+Experience:Fortell kort om din erfaring og dine egenskaper
 Har du tidligere praktisk erfaring med å skape spill / relevant erfaring?
-Utdanning:Hva er din utdanning?
+Education:Hva er din utdanning?
 Size:Hvilken tskjorte-størrelse ønsker du?
 2D:Erfaring [2D]
 3D:Erfaring [3D]
 Programming:Erfaring [Programming]
 Skills:Ferdigheter
 Email:Hva er din Epost?
-Full Name:Fullt Navn
+Full name:Fullt Navn
 Username:Hva er kontoen din / ditt username på Globalgamejam.org?
 Sound:Erfaring [Sound]
 Other:Erfaring [Annet(skriving, game design, marketing, prosjektstyring etc.)]
