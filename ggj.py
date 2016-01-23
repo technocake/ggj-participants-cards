@@ -22,10 +22,20 @@ class JamSite():
 				self.jammers[jammer.username] = jammer.accumulate()
 
 
+	def waiting_list(self):
+		""" Goes over all jammers, and returns those without a ticket """
+		wait_list = []
+		for jammer in self.jammers.values():
+			if not jammer.has_ticket:
+				wait_list.append(jammer)
+		return wait_list
+
+
 class Jammer():
 	def __init__(self, **kwargs):
 		""" populates itself from kwargs """
 		self.Experience = ""
+		
 		if 'Username' not in kwargs:
 			print("Missing Username field")
 			raise
@@ -33,6 +43,9 @@ class Jammer():
 			value = kwargs[key]
 			setattr(self, key, value)
 
+
+	def __repr__(self):
+		return self.username
 	
 	def __hash__(self):
 		""" Used for comparison with other jammers. normalized username is the hash. """
@@ -50,6 +63,10 @@ class Jammer():
 	def username(self):	
 		""" Property and static hack to just keep it procedural. why not."""
 		return Jammer.format_username(self.Username)
+	
+	@property
+	def has_ticket(self):
+	    return hasattr(self, "ticket") and self.ticket == True
 	
 
 	def update(self, updated_jammer):

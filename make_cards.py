@@ -34,13 +34,14 @@ def import_jammers(filename="jammers.csv", fieldnames=None):
 			# Put it in object yo.
 			if filename == "jammers.csv":
 				# These jammers has registered to the jam site. 
-				jammer["has_ticket"] = True
+				jammer["ticket"] = True
 			jammer = Jammer(**jammer)
 			#print(jammer.username, filename)			
 			# Crunch a little on this jammer.
 			jammer.accumulate()
 			parsed_jammers.append(jammer)
 	return parsed_jammers
+
 
 def import_registered_jammers(filename="jammerskillz.csv"):
 	""" Registered jammers are those who have filled out the 
@@ -66,6 +67,8 @@ if __name__ == '__main__':
 	jamsite.mergeinsert( import_registered_jammers() )
 
 	htmlfile = write_jammer_cards(jamsite.jammers.values())
+	print (jamsite.waiting_list())
+
 	#pedagogics. Yes, python has a webbrowser module built-in. Use it !:)
 	import webbrowser
 	webbrowser.open(htmlfile.name)
