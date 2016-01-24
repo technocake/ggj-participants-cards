@@ -5,6 +5,10 @@ from ggj import JamSite, Jammer
 from template_stuff import render_jammers, render_editable_jammers
 
 app = Flask(__name__)
+app.config.from_object('config')
+if "WEBROOT" in app.config:
+	import os
+	os.chdir(app.config["WEBROOT"])
 
 
 @app.route("/")
@@ -19,7 +23,10 @@ def import_jammers():
 		jamsite.save()
 		return "Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder."
 	except:
-		return "not worky"
+		import traceback
+		import os
+		return "<h1>not worky\n\r</h1><p>"+traceback.format_exc()+"</p>"\
+			+ os.getcwd()
 
 @app.route("/print/cards")
 def cards():
