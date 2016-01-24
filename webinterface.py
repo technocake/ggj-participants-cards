@@ -58,10 +58,15 @@ def all_cards():
 
 @app.route("/reset")
 def reset():
-	jamsite = JamSite.load()
-	jamsite.reset(all=True)
-	jamsite.save()
-	return "Hard reset performed."
+	try:
+		jamsite = JamSite.load()
+		jamsite.reset(all=True)
+		jamsite.save()
+		flash("Hard reset performed.")
+		return redirect(url_for('index'))
+	except:
+		import traceback
+		return "<pre>"+traceback.format_exc()+"</pre>"
 
 
 def allowed_file(filename):
@@ -71,13 +76,17 @@ def allowed_file(filename):
 @app.route("/upload/jammers.csv", methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filename = 'jammers.csv'
-            file.save(filename)
-            flash('Uploaded %s' % filename)
-            return redirect(url_for('index'))
+	try:
+            file = request.files['file']
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                filename = 'jammers.csv'
+                file.save(filename)
+                flash('Uploaded %s' % filename)
+                return redirect(url_for('index'))
+        except:
+            import traceback
+            return filename + "<pre>" + traceback.format_exc() + "</pre>"
     import config
     ggj_url = config.ggj_url if hasattr(config, 'ggj_url') else ""
     return render_template('upload-file.html', ggj_url=ggj_url)
