@@ -6,11 +6,12 @@
 		<li class="menuitem"><a href="{{ url_for('editable_cards') }}">Edit Participant cards(with ticket)</a></li>
 		<li class="menuitem"><a href="{{ url_for('import_jammers') }}">import jammers</a></li>
 		<li class="menuitem"><a href="{{ url_for('upload_file') }}">upload jammers.csv</a></li>
-		<li class="menuitem"><a href="{{ url_for('reset') }}">Reset(all)</a></li>
+		<li class="menuitem"><a href="{{ url_for('waiting_list') }}">Waiting list</a></li>
 
 		<li class="menuitem"><a href="{{ url_for('cards') }}">Print Participant cards(with tickets)</a></li>
 		<li class="menuitem"><a href="{{ url_for('all_cards') }}">Print Participant cards(all)</a></li>
 
+		<li class="menuitem"><a href="{{ url_for('reset') }}">Reset(all)</a></li>
 	</ul>
 
 {% endblock %}

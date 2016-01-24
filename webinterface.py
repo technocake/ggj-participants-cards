@@ -3,7 +3,7 @@ from werkzeug import secure_filename
 
 from make_cards import import_all_jammers
 from ggj import JamSite, Jammer
-from template_stuff import render_jammers, render_editable_jammers
+from template_stuff import render_jammers, render_editable_jammers, render_waiting_list
 import classifier
 
 
@@ -51,6 +51,11 @@ def editable_cards():
 	return Response(render_editable_jammers(jamsite.jammers_with_ticket, ui=edit_jammer_ui.format(url=url_for('update_jammer'))))
 
 
+@app.route("/waiting-list")
+def waiting_list():
+	jamsite = JamSite.load()
+	jamsite.apply_human()
+	return render_waiting_list(jamsite.waiting_list())
 
 @app.route("/cards/all")
 def all_cards():

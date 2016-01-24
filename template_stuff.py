@@ -186,6 +186,16 @@ def render_editable_jammer(jammer, ui):
 def render_ui(ui, jammer):
 	return ui % jammer
 
+
+def render_waiting_list(waiting_jammers):
+	out = "<h1> Waiting list: </h1><ol>"
+	for jammer in waiting_jammers:
+		setattr(jammer, "username", jammer.username)
+		out += "<li> <a href='http://globalgamejam.org/users/%(username)s' target='_blank'>%(Username)s</a> - %(Email)s</li>" % jammer
+	out += "</ol>"
+	return out
+
+
 def render_role(main_role):
 	""" Picks the first class. and renders it.  """
 	return "cls_" + main_role
