@@ -19,8 +19,7 @@ def import_jammers():
 		jamsite.save()
 		return "Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder."
 	except:
-		import traceback
-		return traceback.print_exc()
+		return "not worky"
 
 @app.route("/print/cards")
 def cards():

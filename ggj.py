@@ -62,11 +62,9 @@ class JamSite():
 
 	def save(self, filename="jamsite.pickle"):
 		""" sideeffects """
-		try:
-			with open(filename, "wb") as statefile:
+		with open(filename, "wb") as statefile:
 				cpickle.dump(self, statefile)
-		except:
-			pass #notify of error somehow. Flask, howto?
+
 
 
 	def serialize(self):
