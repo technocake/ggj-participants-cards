@@ -118,7 +118,9 @@ page_footer = """
 </html>
 """
 
-edit_jammer_ui = "\n\r".join(["<a class='update' href='/jammer/update?Username=%(Username)s&main_role={role}'>Change to {role}</a>".format(role=role) for role in classifier.groups])
+
+
+
 
 
 template = """
@@ -166,22 +168,23 @@ def render_jammers(jammers):
 	yield page_footer
 
 
-def render_editable_jammers(jammers):
+def render_editable_jammers(jammers, ui):
 	""" assembles this whole thing together, adds UI for admin """
 	yield page_head
 	for jammer in jammers:
-		yield render_editable_jammer(jammer) 	
+		yield render_editable_jammer(jammer, ui) 	
 	yield page_footer
 
-def render_editable_jammer(jammer):
+
+def render_editable_jammer(jammer, ui):
 	""" 
 		Adds UI for the admin to edit a jammer card 
 	"""
-	jammer.ui = render_ui(jammer)
+	jammer.ui = render_ui(ui, jammer)
 	return render_jammer(jammer)
 
-def render_ui(jammer):
-	return edit_jammer_ui % jammer
+def render_ui(ui, jammer):
+	return ui % jammer
 
 def render_role(main_role):
 	""" Picks the first class. and renders it.  """

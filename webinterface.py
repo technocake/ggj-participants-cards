@@ -4,12 +4,17 @@ from werkzeug import secure_filename
 from make_cards import import_all_jammers
 from ggj import JamSite, Jammer
 from template_stuff import render_jammers, render_editable_jammers
+import classifier
+
 
 app = Flask(__name__)
 app.config.from_object('config')
 if "WEBROOT" in app.config:
 	import os
 	os.chdir(app.config["WEBROOT"])
+
+
+edit_jammer_ui = "\n\r".join(["<a class='update' href='{url}?Username=%(Username)s&main_role={role}'>Change to {role}</a>".format(role=role, url='{url}') for role in classifier.groups])
 
 
 @app.route("/")
@@ -43,7 +48,7 @@ def editable_cards():
 	""" Renders cards for all jammers with a ticket , and lets them be edited."""
 	jamsite = JamSite.load()
 	jamsite.apply_human()
-	return Response(render_editable_jammers(jamsite.jammers_with_ticket))
+	return Response(render_editable_jammers(jamsite.jammers_with_ticket, ui=edit_jammer_ui.format(url=url_for('update_jammer'))))
 
 
 
