@@ -1,15 +1,16 @@
 #coding: utf-8
-
-class SkillzClassifier():
-	skillset = "3d art,  animation,  audio,  game design,  game development,music,  programming,  project management,  story and narrative, 2d art, quality assurance, hardware, writing, marketing, web design, management"
-
-	groups = {
+groups = {
 		"3D": ["3d art"],
 		"2D": ["2d art", "animation"], #animation just need to be red, art.
 		"Programming": ["programming", "hardware"],
 		"Sound": ["music", "audio"],
 		"Other": ["game design", "writing", "story and narrative", "project management", "marketing", "quality assurance", "management", "web design", "game development"]
 	}
+
+class SkillzClassifier():
+	skillset = "3d art,  animation,  audio,  game design,  game development,music,  programming,  project management,  story and narrative, 2d art, quality assurance, hardware, writing, marketing, web design, management"
+
+	groups = groups
 	
 	
 	def simply_classify(self, text):

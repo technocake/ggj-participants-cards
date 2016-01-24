@@ -2,7 +2,7 @@ from flask import Flask, request, Response, redirect, url_for, render_template
 
 from make_cards import import_all_jammers
 from ggj import JamSite, Jammer
-from template_stuff import render_jammers
+from template_stuff import render_jammers, render_editable_jammers
 
 app = Flask(__name__)
 
@@ -19,12 +19,21 @@ def import_jammers():
 	return "Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder."
 
 
-@app.route("/cards")
+@app.route("/print/cards")
 def cards():
 	""" Renders cards for all jammers with a ticket """
 	jamsite = JamSite.load()
 	jamsite.apply_human()
 	return Response(render_jammers(jamsite.jammers_with_ticket))
+
+
+@app.route("/cards")
+def editable_cards():
+	""" Renders cards for all jammers with a ticket , and lets them be edited."""
+	jamsite = JamSite.load()
+	jamsite.apply_human()
+	return Response(render_editable_jammers(jamsite.jammers_with_ticket))
+
 
 
 @app.route("/cards/all")
@@ -55,10 +64,11 @@ def update_jammer():
 	jamsite.administrated_jammers[jammer.username] = jammer
 	#jamsite.jammers[jammer.username] = jamsite.jammers[jammer.username].update(jammer)
 	jamsite.save()
-	return "<p>".join([str(v) for v in list(jammer.__dict__.values())])
+	## Flash (OK). not necessary actually.
+	return redirect(url_for('editable_cards') + '#' + jammer.username)
 
 
 if __name__ == '__main__':
 	import webbrowser
-	#webbrowser.open("http://localhost:5000")
+	webbrowser.open("http://localhost:5000")
 	app.run(debug=True)

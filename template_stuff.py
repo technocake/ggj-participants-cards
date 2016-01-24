@@ -1,3 +1,4 @@
+import classifier
 role_colors = {
 		"unclassified": "Gray",
 		"3D": "FireBrick",
@@ -37,8 +38,12 @@ style = """
 			border-style: solid;
 			content: ''; 
 		}
+		/*
+		  Well, turns out a :before element will cover the entire main element. Not doing something uselful. Just blocking it. 
+		  So lets move it behind in the z-stack.
+		*/
 
-
+		::before { z-index: -1337; }
 		.cls_unclassified,
 		.cls_unclassified:before { border-color: %(unclassified)s; }
 		.cls_Sound, .cls_Sound:before {	border-color:%(Sound)s; }
@@ -70,6 +75,11 @@ style = """
 			background-color: %(Other)s !important; 
 			color: %(t_Other)s !important; }
 
+		.ui {
+			display: inline-block;
+			float: right;
+		}
+		.ui::after {clear:both;}
 
 		body {
 			text-align: center;
@@ -86,8 +96,29 @@ style = """
 		</style>
 """ % dict(list(role_colors.items()) + list(role_text_colors.items()))
 
+
+page_head = """<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Jammers</title>
+	%(style)s
+</head>
+<body>
+""" % dict(style=style)
+
+
+page_footer = """
+</body>
+</html>
+"""
+
+edit_jammer_ui = "\n\r".join(["<a href='/jammer/update?Username=%(Username)s&main_role={role}'>Change to {role}</a>".format(role=role) for role in classifier.groups])
+
+
 template = """
-	<div class="jammer %(class)s">
+	<div class="jammer %(class)s" id="%(username)s">
+		<div class='ui'>%(ui)s</div>
 		<h2>%(Username)s</h2>
 		<h3>%(Full name)s</h3>
 		<ul>
@@ -116,15 +147,36 @@ def render_jammer(jammer):
 		jammer.Size="?"
 	if not hasattr(jammer, "Education"):
 		jammer.Education=""
+	if not hasattr(jammer, "ui"):
+		jammer.ui=""
+	setattr(jammer, "username", jammer.username)
 	return template % jammer.__dict__
 
 
 def render_jammers(jammers):
 	""" assembles this whole thing together """
-	yield "<meta charset=\"utf-8\">\n\r %s" % style
+	yield page_head
 	for jammer in jammers:
-		yield render_jammer(jammer) 
+		yield render_jammer(jammer)
+	yield page_footer
 
+
+def render_editable_jammers(jammers):
+	""" assembles this whole thing together, adds UI for admin """
+	yield page_head
+	for jammer in jammers:
+		yield render_editable_jammer(jammer) 	
+	yield page_footer
+
+def render_editable_jammer(jammer):
+	""" 
+		Adds UI for the admin to edit a jammer card 
+	"""
+	jammer.ui = render_ui(jammer)
+	return render_jammer(jammer)
+
+def render_ui(jammer):
+	return edit_jammer_ui % jammer
 
 def render_role(main_role):
 	""" Picks the first class. and renders it.  """
