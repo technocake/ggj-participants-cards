@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
 
 {% block body %}
+	<style type="text/css" media="screen">
+		ul { list-style: none; }
+		li { display: inline-block; border: 1px solid black;}	
+		a {padding: 50px; display: block;}
+		a:hover{ background-color: Moccasin;}
+	</style>
 	<ul>
+		<li class="menuitem"><a href="{{ url_for('editable_cards') }}">Edit Participant cards(with ticket)</a></li>
 		<li class="menuitem"><a href="{{ url_for('import_jammers') }}">import jammers</a></li>
 		<li class="menuitem"><a href="{{ url_for('reset') }}">Reset(all)</a></li>
-		<li class="menuitem"><a href="{{ url_for('cards') }}">Participant cards(with tickets)</a></li>
-		<li class="menuitem"><a href="{{ url_for('all_cards') }}">Participant cards(all)</a></li>
+
+		<li class="menuitem"><a href="{{ url_for('cards') }}">Print Participant cards(with tickets)</a></li>
+		<li class="menuitem"><a href="{{ url_for('all_cards') }}">Print Participant cards(all)</a></li>
 
 	</ul>
 

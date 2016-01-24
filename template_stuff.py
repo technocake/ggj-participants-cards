@@ -76,10 +76,14 @@ style = """
 			color: %(t_Other)s !important; }
 
 		.ui {
+			position: absolute;
+			right: 20px;
 			display: inline-block;
 			float: right;
 		}
 		.ui::after {clear:both;}
+
+		.update { display: block; padding: 15px; border: 1px solid black;}
 
 		body {
 			text-align: center;
@@ -94,6 +98,7 @@ style = """
 			margin: 40px;
 		}
 		</style>
+
 """ % dict(list(role_colors.items()) + list(role_text_colors.items()))
 
 
@@ -113,7 +118,7 @@ page_footer = """
 </html>
 """
 
-edit_jammer_ui = "\n\r".join(["<a href='/jammer/update?Username=%(Username)s&main_role={role}'>Change to {role}</a>".format(role=role) for role in classifier.groups])
+edit_jammer_ui = "\n\r".join(["<a class='update' href='/jammer/update?Username=%(Username)s&main_role={role}'>Change to {role}</a>".format(role=role) for role in classifier.groups])
 
 
 template = """
