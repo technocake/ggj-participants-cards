@@ -5,8 +5,26 @@
         <meta name="description" content="A tool for GGJ organizers to make player cards.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>BGJ-Card Maker</title>
+        
+        <style type="text/css" media="screen">
+			ul { list-style: none; }
+			li { display: inline-block; border: 1px solid black;}	
+			a {padding: 50px; display: block;}
+			a:hover{ background-color: Moccasin;}
+		</style>	
+        
     </head>
     <body>
+   {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+  
         {% block body %}
 
         {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body %}
+	<style type="text/css" media="screen">
+			
+	</style>
+	<h1>Upload jammers.csv</h1>
+    <form action="{{ url_for('upload_file') }}" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+
+    <div>
+    	<a href="{{ ggj_url }}" target="_blank"> 
+    		Download jammers.csv from globalgamejam.org
+    	</a>
+    </div>
+{% endblock %}

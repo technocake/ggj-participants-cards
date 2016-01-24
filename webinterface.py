@@ -1,4 +1,5 @@
-from flask import Flask, request, Response, redirect, url_for, render_template
+from flask import Flask, request, Response, redirect, url_for, render_template, flash
+from werkzeug import secure_filename
 
 from make_cards import import_all_jammers
 from ggj import JamSite, Jammer
@@ -21,7 +22,8 @@ def import_jammers():
 	try:
 		jamsite = import_all_jammers()
 		jamsite.save()
-		return "Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder."
+		flash("Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder.")
+		return redirect(url_for('index'))
 	except:
 		import traceback
 		import os
@@ -60,6 +62,27 @@ def reset():
 	jamsite.reset(all=True)
 	jamsite.save()
 	return "Hard reset performed."
+
+
+def allowed_file(filename):
+	return filename.split(".")[-1] in ["csv"]
+
+
+@app.route("/upload/jammers.csv", methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filename = 'jammers.csv'
+            file.save(filename)
+            flash('Uploaded %s' % filename)
+            return redirect(url_for('index'))
+    import config
+    ggj_url = config.ggj_url if hasattr(config, 'ggj_url') else ""
+    return render_template('upload-file.html', ggj_url=ggj_url)
+
+
 
 	
 @app.route("/jammer/update")
