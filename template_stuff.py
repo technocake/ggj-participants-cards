@@ -90,12 +90,13 @@ template = """
 	<div class="jammer %(class)s">
 		<h2>%(Username)s</h2>
 		<h3>%(Full name)s</h3>
-		<p class="experience">%(Experience)s</p>
 		<ul>
 			%(classifications)s
 		</ul>
-		<h3>T-shirt size: %(Size)s</h3>
 		<img src="%(picture)s" />
+		<h3>T-shirt size: %(Size)s</h3>
+		<p class="experience">%(Experience)s</p>
+		<h4>Education:</h4> %(Education)s
 		
 		<h3>Skills:</h3>
 		<ul>
@@ -113,6 +114,8 @@ def render_jammer(jammer):
 		jammer.Experience = ""
 	if not hasattr(jammer, "Size"):
 		jammer.Size="?"
+	if not hasattr(jammer, "Education"):
+		jammer.Education=""
 	return template % jammer.__dict__
 
 

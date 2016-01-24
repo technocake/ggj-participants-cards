@@ -6,6 +6,7 @@ from template_stuff import render_jammers
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
 	return render_template("index.html")
@@ -20,23 +21,42 @@ def import_jammers():
 
 @app.route("/cards")
 def cards():
+	""" Renders cards for all jammers with a ticket """
+	jamsite = JamSite.load()
+	jamsite.apply_human()
+	return Response(render_jammers(jamsite.jammers_with_ticket))
+
+
+@app.route("/cards/all")
+def all_cards():
+	""" Renders cards for all known about jammers associated with this site.
+		ticekt holders and waiting list jammers """
 	jamsite = JamSite.load()
 	jamsite.apply_human()
 	return Response(render_jammers(jamsite.jammers.values()))
 
 
+@app.route("/reset")
+def reset():
+	jamsite = JamSite.load()
+	jamsite.reset(all=True)
+	jamsite.save()
+	return "Hard reset performed."
+
+	
 @app.route("/jammer/update")
 def update_jammer():
 	""" updates a jammer """
 	d = request.args
 	#hehehehehe. but it works. 
 	jammer = Jammer(**dict((k, str(d[k])) for k in list(d.keys())))
-	
+	#jammer.accumulate()
 	jamsite = JamSite.load()
 	jamsite.administrated_jammers[jammer.username] = jammer
 	#jamsite.jammers[jammer.username] = jamsite.jammers[jammer.username].update(jammer)
 	jamsite.save()
-	return "<p>".join(list(jammer.__dict__.values()))
+	return "<p>".join([str(v) for v in list(jammer.__dict__.values())])
+
 
 if __name__ == '__main__':
 	import webbrowser

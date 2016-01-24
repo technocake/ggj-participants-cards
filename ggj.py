@@ -36,6 +36,7 @@ class JamSite():
 				# new knowledge
 				self.jammers[jammer.username].accumulate()
 
+
 	def apply_human(self):
 		""" Last step is to overwrite with human changes """
 		self.apply_human_decissions(self.administrated_jammers.values())
@@ -53,6 +54,10 @@ class JamSite():
 			if not jammer.has_ticket:
 				wait_list.append(jammer)
 		return wait_list
+
+	@property
+	def jammers_with_ticket(self):
+		return [j for j in self.jammers.values() if j.has_ticket]
 
 
 	def save(self, filename="jamsite.pickle"):
@@ -82,6 +87,7 @@ class JamSite():
 		if all:
 			self.administrated_jammers = OrderedDict()
 		return self
+
 
 class Jammer():
 	__docstring__ = """ Jammer class, must have Username as a minimum. """
