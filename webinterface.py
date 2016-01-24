@@ -14,10 +14,13 @@ def index():
 
 @app.route("/import")
 def import_jammers():
-	jamsite = import_all_jammers()
-	jamsite.save()
-	return "Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder."
-
+	try:
+		jamsite = import_all_jammers()
+		jamsite.save()
+		return "Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder."
+	except:
+		import traceback
+		return traceback.print_exc()
 
 @app.route("/print/cards")
 def cards():
