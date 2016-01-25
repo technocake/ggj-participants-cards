@@ -15,6 +15,8 @@ Generates a sweet html file that can be printed with a card for each jammer in a
   jammers.csv (downloaded from organizing site)
   put it in the same folder as this program-suite.
 
+  ![alt screenshot](https://raw.github.com/technocake/ggj-participants-cards/master/download-jammers.csv.png)
+
 #Output
  jammers.html --> print it, impress.
  
