@@ -46,6 +46,35 @@ class JamSite():
 		self.mergeinsert(list_of_jammers, accumulate=False)
 
 
+	def jammers_sorted_by_main_role(self, with_ticket=True):
+		""" Returns a list of jammers sorted by their classified main role.
+		    so that the cards can be printed color by color. """
+		jammers = []
+		pool = self.jammers_with_ticket if with_ticket else self.jammers.values()
+
+		for main_role in classifier.groups:
+			jammers += self.jammers_with_main_role(main_role, pool)
+		jammers += self.jammers_with_main_role("unclassified", pool)
+		return jammers
+
+
+	def jammers_with_main_role(self, main_role, jammers=None):
+		""" returns jammers with selected main_role """
+		if jammers is None:
+			jammers = self.jammers.values()
+		return [j for j in jammers if j.main_role==main_role]
+
+
+	def jammer_distribution(self):
+		""" Returns some statistics about the distribution of jammer roles """
+		distribution = {}
+		for role in classifier.groups:
+			distribution[role] = len(self.jammers_with_main_role(role, self.jammers_with_ticket))
+		role = 'unclassified'
+		distribution[role] = len(self.jammers_with_main_role(role, self.jammers_with_ticket))
+		distribution["total"] = sum(distribution.values())
+		return distribution
+
 
 	def waiting_list(self):
 		""" Goes over all jammers, and returns those without a ticket """
@@ -186,3 +215,6 @@ if __name__ == '__main__':
 	j = Jammer(Username="Technocake")
 	print(j.Username, j.username)
 	j.update(Jammer(Username='Technocake', Skills="music, programming, music"))
+	jamsite = JamSite.load()
+	print (jamsite.jammers_sorted_by_main_role(with_ticket=True))
+	print (jamsite.jammer_distribution())

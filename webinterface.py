@@ -19,7 +19,9 @@ edit_jammer_ui = "\n\r".join(["<a class='update' href='{url}?Username=%(Username
 
 @app.route("/")
 def index():
-	return render_template("index.html")
+	jamsite = JamSite.load()
+	jamsite.apply_human()
+	return render_template("index.html", jamsite=jamsite)
 
 
 @app.route("/import")
@@ -40,7 +42,7 @@ def cards():
 	""" Renders cards for all jammers with a ticket """
 	jamsite = JamSite.load()
 	jamsite.apply_human()
-	return Response(render_jammers(jamsite.jammers_with_ticket))
+	return Response(render_jammers(jamsite.jammers_sorted_by_main_role(with_ticket=True)))
 
 
 @app.route("/cards")
@@ -56,6 +58,7 @@ def waiting_list():
 	jamsite = JamSite.load()
 	jamsite.apply_human()
 	return render_waiting_list(jamsite.waiting_list())
+
 
 @app.route("/cards/all")
 def all_cards():
