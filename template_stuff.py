@@ -97,6 +97,15 @@ style = """
 			border-radius: 80px;
 			margin: 40px;
 		}
+
+		</style>
+		
+
+		<style type="text/css" media="print">
+			@page {
+			    size: auto;   /* auto is the initial value */
+			    margin: 0;  /* this affects the margin in the printer settings */
+			}
 		</style>
 
 """ % dict(list(role_colors.items()) + list(role_text_colors.items()))

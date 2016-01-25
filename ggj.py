@@ -92,7 +92,7 @@ class JamSite():
 	def save(self, filename="jamsite.pickle"):
 		""" sideeffects """
 		with open(filename, "wb") as statefile:
-				cpickle.dump(self, statefile)
+			cpickle.dump(self, statefile)
 
 
 
