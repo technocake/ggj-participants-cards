@@ -81,7 +81,7 @@ def import_from_file(jamsite, source='jammers.csv', fieldnames=None):
 		jamsite.mergeinsert( import_jammers(csvfile, fieldnames=fieldnames) )
 
 
-def import_all_jammers(sources=dict(file='jammers.csv'), fieldnames=None):
+def import_all_jammers(sources=[dict(file='jammers.csv')], fieldnames=None):
 	""" Handles the details """
 	jamsite = JamSite().load().reset()
 	
@@ -112,7 +112,7 @@ def load_sources():
 		return sources
 
 
-def make_cards(sources=dict(file='jammers.csv'), fieldnames=None):
+def make_cards(sources=[dict(file='jammers.csv')], fieldnames=None):
 	""" Main function. It will import jammers from jammers.csv, then from google forms and build a card for each jammer. 
 
 		Output - jammers.html 
