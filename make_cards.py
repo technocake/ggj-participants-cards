@@ -156,7 +156,33 @@ if __name__ == '__main__':
 	
 
 	fieldnames=gf_fieldnames()
-	htmlfile = make_cards(sources)
+	print("""
+		Starting to create the jammer cards. importing from %d source(s).
+
+		Have yourself a cup of tea!
+		This will take a couple of minutes the first time it is done.
+		(Because it takes a while to fetch the profile pictures)
+		
+		Everything will be cached from now on, 
+		and this should take significantly lesser time on subsequent runs ;).
+
+		The generated file will open automatically in your browser when
+		completed.
+		"""%len(sources))
+	try:
+		htmlfile = make_cards(sources)
+	except IOError as e:
+		print(""" 
+			Ah hoy!, forgotten something Mrs/Mr? 
+				-Missing 'jammers.csv'. 
+
+			Make sure 'jammers.csv' is in the same folder as this script and run again.
+
+			This file contains the information about your site's jammers. 
+		
+			Download it from your jamsite's global gamejam page. 
+			Click the button [Download Jammer info] at the bottom beneath the list of jammers.
+			""")
 	#pedagogics. Yes, python has a webbrowser module built-in. Use it !:)
-	webbrowser.open(htmlfile.name)	
-	
+	print(""" Done """)
+	webbrowser.open(htmlfile.name)
