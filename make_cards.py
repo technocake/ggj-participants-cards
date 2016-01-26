@@ -106,9 +106,9 @@ def load_sources():
 		"""
 		try:
 			import config
-			sources = getattr(config, "sources", dict(file='jammers.csv'))
+			sources = getattr(config, "sources", [dict(file='jammers.csv')])
 		except:
-			sources = dict(file='jammers.csv')
+			sources = [dict(file='jammers.csv')]
 		return sources
 
 
