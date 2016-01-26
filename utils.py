@@ -2,6 +2,7 @@
 from analyze import load
 from picsgetter import username
 import requests
+import requests_cache
 
 def dict_jammers(list_of_jammers, key="Username", keyformat=username):
 	""" Converts a list of jammers to a dict of jammers with key Username (default) """
@@ -11,17 +12,17 @@ def dict_jammers(list_of_jammers, key="Username", keyformat=username):
 	return jammers
 
 
-def fetch_gforms_csv():
+def fetch_csv_from_url(url):
 	""" Gets a fresh copy of the Google Forms Response file and treats it like a file object. 
 
 		In order for this to work, the response sheet must be published to the web as csv and the link must be put in config.py under the variable gforms_url.
 	"""
-	from config import gforms_url
-	from random import randrange
+	
 	#cache avoidance.
-	r = requests.get(gforms_url + "&%s"%str(randrange(1000000)) )
-	if r.status_code == 200:
-		return r.iter_lines()
+	with requests_cache.disabled():
+		r = requests.get(url)
+		if r.status_code == 200:
+			return r.iter_lines()
 
 
 def find_waiting_people(formjammers, filename, jammers, fieldnames):
@@ -68,6 +69,8 @@ def gf_fieldnames(fn="forms-fields.txt"):
 				<better_fieldname>:<original field name>
 
 	"""
+	if fn is None: 
+		return None
 	with open(fn) as f:
 		fieldnames = [fieldname.split(":")[0] for fieldname in f]
 		return fieldnames

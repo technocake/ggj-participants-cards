@@ -27,9 +27,10 @@ def index():
 @app.route("/import")
 def import_jammers():
 	try:
-		jamsite = import_all_jammers()
+		from make_cards import load_sources
+		jamsite = import_all_jammers(load_sources())
 		jamsite.save()
-		flash("Imported. Remember to have a fresh version of jammers.csv from ggj.org in this folder. put it in this folder.")
+		flash("Imported. Remember to have a fresh version of jammers.csv from ggj.org uploaded. Click upload jammers.csv to do that.")
 		return redirect(url_for('index'))
 	except:
 		import traceback
@@ -37,11 +38,21 @@ def import_jammers():
 		return "<h1>not worky\n\r</h1><p>"+traceback.format_exc()+"</p>"\
 			+ os.getcwd()
 
+
+def not_imported(jamsite):
+	if len(jamsite.jammers) == 0:
+		flash("No Jammers. Have you imported any jammers? Upload jammers.csv and click import jammers.")
+		return True
+	return False
+
+
 @app.route("/print/cards")
 def cards():
 	""" Renders cards for all jammers with a ticket """
 	jamsite = JamSite.load()
 	jamsite.apply_human()
+	if not_imported(jamsite):
+		return redirect(url_for('index'))
 	return Response(render_jammers(jamsite.jammers_sorted_by_main_role(with_ticket=True)))
 
 
@@ -50,6 +61,8 @@ def editable_cards():
 	""" Renders cards for all jammers with a ticket , and lets them be edited."""
 	jamsite = JamSite.load()
 	jamsite.apply_human()
+	if not_imported(jamsite):
+		return redirect(url_for('index'))
 	return Response(render_editable_jammers(jamsite.jammers_with_ticket, ui=edit_jammer_ui.format(url=url_for('update_jammer'))))
 
 
@@ -57,6 +70,8 @@ def editable_cards():
 def waiting_list():
 	jamsite = JamSite.load()
 	jamsite.apply_human()
+	if not_imported(jamsite):
+		return redirect(url_for('index'))
 	return render_waiting_list(jamsite.waiting_list())
 
 
@@ -66,6 +81,8 @@ def all_cards():
 		ticekt holders and waiting list jammers """
 	jamsite = JamSite.load()
 	jamsite.apply_human()
+	if not_imported(jamsite):
+		return redirect(url_for('index'))
 	return Response(render_jammers(jamsite.jammers.values()))
 
 

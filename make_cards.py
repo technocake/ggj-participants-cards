@@ -8,7 +8,7 @@ import classifier
 from template_stuff import style, template, render_skills, render_classifications, render_role, render_jammer, render_jammers
 
 from ggj import JamSite, Jammer
-from utils import fetch_gforms_csv, gf_fieldnames
+from utils import fetch_csv_from_url, gf_fieldnames
 
 # Instantiating our skills classifier, born
 # at Pilsner and Programming in Bergen #3 2016.
@@ -37,19 +37,13 @@ def import_jammers(csvfile, fieldnames=None):
 		# Skip header line/fieldnames line
 		jammers = csv.DictReader(csvfile, fieldnames)
 		next(jammers)
+
 	for jammer in jammers:
-		# Put it in object yo.
-		#try:
 		if hasattr(csvfile, "name") and csvfile.name == "jammers.csv":
 			# These jammers has registered to the jam site. 
 			jammer["ticket"] = True
+		# Put it in object yo.
 		jammer = Jammer(**jammer)
-		#except:
-		#	print("Skipping %s" % jammer)
-		#	continue #skip invalid jammers.
-		#print(jammer.username, filename)			
-		# Crunch a little on this jammer.
-		#jammer.accumulate()
 		parsed_jammers.append(jammer)
 	return parsed_jammers
 
@@ -71,46 +65,98 @@ def write_jammer_cards(jammers, filename="jammers.html"):
 	return htmlfile
 
 
-def import_from_gforms(jamsite):
-	""" Fetches the gforms reusults page as csv from a published csv link.
+def import_from_url(jamsite, url, fieldnames=None):
+	""" Fetches the gforms results page as csv from a published csv link.
 		imports it to the jamsite.jammers 
 	"""
-	# import gforms, from the webz.
-	csvfile = fetch_gforms_csv()
-	jamsite.mergeinsert( import_jammers(csvfile, fieldnames=gf_fieldnames()) )
+	# import csv, from the webz.
+	csvfile = fetch_csv_from_url(url)
+	jamsite.mergeinsert( import_jammers(csvfile, fieldnames=fieldnames) )
 
 
-def import_from_ggj(jamsite):
+def import_from_file(jamsite, source='jammers.csv', fieldnames=None):
 	""" Imports from jammers.csv and mergeinserts into jamsite.jammers. """
 	# import jammers.csv
-	with open("jammers.csv") as csvfile:
-		jamsite.mergeinsert( import_jammers(csvfile) )
+	with open(source) as csvfile:
+		jamsite.mergeinsert( import_jammers(csvfile, fieldnames=fieldnames) )
 
 
-def import_all_jammers():
+def import_all_jammers(sources=dict(file='jammers.csv'), fieldnames=None):
 	""" Handles the details """
 	jamsite = JamSite().load().reset()
 	
-	import_from_ggj(jamsite)
-	import_from_gforms(jamsite)
+	for source in sources:
+		if "url" in source.keys():
+			url = source['url']
+			fieldnames = gf_fieldnames(source.get('fields', None))
+			import_from_url(jamsite, url, fieldnames)
+		else:
+			file = source.get("file", "Catastrophe")
+			fieldnames = gf_fieldnames(source.get('fields', None))
+			import_from_file(jamsite, file, fieldnames)
 	
-	# Write it to file.
+	# Add a touch of human decisions.
 	jamsite.apply_human()
 	return jamsite
 
+def load_sources():
+		""" Will attempt to load sources from config,
+			if config doesn't existt; 
+				returns default
+		"""
+		try:
+			import config
+			sources = getattr(config, "sources", dict(file='jammers.csv'))
+		except:
+			sources = dict(file='jammers.csv')
+		return sources
 
-def make_cards():
-	""" Main function. It will import jammers from jammers.csv, then from google forms and build a card for each. 
+
+def make_cards(sources=dict(file='jammers.csv'), fieldnames=None):
+	""" Main function. It will import jammers from jammers.csv, then from google forms and build a card for each jammer. 
 
 		Output - jammers.html 
 	"""
-	jamsite = import_all_jammers()
+	jamsite = import_all_jammers(sources)
 	htmlfile = write_jammer_cards(jamsite.jammers.values())
+	return htmlfile
 
-	#pedagogics. Yes, python has a webbrowser module built-in. Use it !:)
-	import webbrowser
-	webbrowser.open(htmlfile.name)	
 
 if __name__ == '__main__':
-	make_cards()
+	import argparse
+	import webbrowser
+
+	parser = argparse.ArgumentParser(description="""
+		Bergen Game Jam Card Maker.
+
+		A program that will create a printable html file with a card for
+		all the jammers in a global gamejam site. 
+		
+		by default it will look for the file: jammers.csv in this directory.
+		""")
+	parser.add_argument('sources', metavar='S', type=str, nargs='*',
+							default='',	
+							help='Sources of jammer info in csv format. Either files or urls. If none provided, default is jammers.csv')
+	parser.add_argument('--fields', metavar='FIELDNAMES_FILE', type=str, 
+							help='NOT IMPLEMENTED YET.Optionally you can give a file with fieldnames mappings for the source. ')
+	args = parser.parse_args()
+	# Load source from args
+	if type(args.sources) is list:
+		sources = []
+		for source in args.sources:
+			if "http" in source:
+				#foo hack to guess if fields is given, it belongs to an external source.
+				sources.append(dict(url=source, fields=args.fields))
+
+			else:
+				sources.append(dict(file=source))
+	else:
+		# Load sources from config, if that fails, default.
+		sources = load_sources()
+	
+
+	fieldnames=gf_fieldnames()
+	htmlfile = make_cards(sources)
+	#pedagogics. Yes, python has a webbrowser module built-in. Use it !:)
+	webbrowser.open(htmlfile.name)	
 	
