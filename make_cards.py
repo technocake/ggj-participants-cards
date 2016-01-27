@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 #coding: utf-8
 import csv
-import re
+import sys
+# this module
 import picsgetter
-from picsgetter import username
 import classifier
 from template_stuff import style, template, render_skills, render_classifications, render_role, render_jammer, render_jammers
-
 from ggj import JamSite, Jammer
 from utils import fetch_csv_from_url, gf_fieldnames
 
@@ -19,12 +18,13 @@ missing_jammers_file="""
 	Ah hoy!, forgotten something Mrs/Mr? 
 		-Missing 'jammers.csv'. 
 
-	Make sure 'jammers.csv' is in the same folder as this script and run again.
-
-	This file contains the information about your site's jammers. 
+	Make sure 'jammers.csv' is in the same folder 
+	as this script and run again. This file contains 
+	the information about your site's jammers. 
 
 	Download it from your jamsite's global gamejam page. 
-	Click the button [Download Jammer info] at the bottom beneath the list of jammers.
+	Click the button [Download Jammer info] 
+	at the bottom, beneath the list of jammers.
 	"""
 )
 
@@ -169,6 +169,7 @@ if __name__ == '__main__':
 		# Load sources from config, if that fails, default.
 		sources = load_sources()
 		
+
 	print("""
 	Starting to create the jammer cards. importing from %d source(s).
 
@@ -187,8 +188,9 @@ if __name__ == '__main__':
 	try:
 		htmlfile = make_cards(sources)
 	except IOError as e:
+		print("\n\r"*40)
 		print(errormsg["missing_jammers_file"])
-
+		sys.exit(1)
 
 	#pedagogics. Yes, python has a webbrowser module built-in. Use it !:)
 	print(""" Done """)
