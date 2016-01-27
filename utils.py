@@ -12,17 +12,6 @@ def dict_jammers(list_of_jammers, key="Username", keyformat=username):
 	return jammers
 
 
-def fetch_csv_from_url(url):
-	""" Gets a fresh copy of the Google Forms Response file and treats it like a file object. 
-
-		In order for this to work, the response sheet must be published to the web as csv and the link must be put in config.py under the variable gforms_url.
-	"""
-	
-	#cache avoidance.
-	with requests_cache.disabled():
-		r = requests.get(url)
-		if r.status_code == 200:
-			return r.iter_lines()
 
 
 def find_waiting_people(formjammers, filename, jammers, fieldnames):
@@ -59,21 +48,6 @@ def venteliste(jammers, signupfile):
 	return venteliste
 
 
-def gf_fieldnames(fn="forms-fields.txt"):
-	""" Input a google form mapped fieldnames file, 
-		output: better fieldnames for scripting 
-
-		format:
-			* one line per fieldname
-			* optional better name given with the syntax: 
-				<better_fieldname>:<original field name>
-
-	"""
-	if fn is None: 
-		return None
-	with open(fn) as f:
-		fieldnames = [fieldname.split(":")[0] for fieldname in f]
-		return fieldnames
 
 
 def emails(jammers):

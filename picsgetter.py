@@ -1,11 +1,16 @@
-import requests
-from bs4 import BeautifulSoup
-#Let's cache this shit
-import requests_cache
-requests_cache.install_cache('bgj_cache')
-import re
-import hashlib
 import sys
+import re
+from simplify import errormsg
+try:
+	import requests
+	from bs4 import BeautifulSoup
+	#Let's cache this shit
+	import requests_cache
+except:
+	print(errormsg['missing_dependencies'])
+import hashlib
+
+requests_cache.install_cache('bgj_cache')
 
 def username(Username):
 	""" 

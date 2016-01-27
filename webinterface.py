@@ -1,7 +1,13 @@
-from flask import Flask, request, Response, redirect, url_for, render_template, flash
-from werkzeug import secure_filename
-
-from make_cards import import_all_jammers, errormsg, make_minimum_configuration
+import sys
+from simplify import errormsg, make_minimum_configuration, load_sources
+try:
+	from flask import Flask, request, Response, redirect, url_for, render_template, flash
+	from werkzeug import secure_filename
+except:
+	print(errormsg['missing_dependencies'])
+	sys.exit(1)
+	
+from importing import import_all_jammers
 from ggj import JamSite, Jammer
 from template_stuff import render_jammers, render_editable_jammers, render_waiting_list
 import classifier
@@ -38,19 +44,17 @@ def index():
 @app.route("/import")
 def import_jammers():
 	try:
-		from make_cards import load_sources
 		jamsite = import_all_jammers(load_sources())
 		jamsite.save()
-		flash("Imported. Remember to have a fresh version of jammers.csv from ggj.org uploaded. Click upload jammers.csv to do that.")
+		flash("Done with the import! ")
 		return redirect(url_for('index'))
 	except IOError:
 		flash(errormsg['missing_jammers_file'])
 		return redirect(url_for('index'))
 	except:
 		import traceback
-		import os
 		return "<h1>not worky\n\r</h1><p>"+traceback.format_exc()+"</p>"\
-			+ os.getcwd()
+			
 
 
 def not_imported(jamsite):
@@ -137,7 +141,6 @@ def upload_file():
     	config = None
     ggj_url = config.ggj_url if hasattr(config, 'ggj_url') else ""
     return render_template('upload-file.html', ggj_url=ggj_url)
-
 
 
 	

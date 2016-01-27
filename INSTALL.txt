@@ -7,6 +7,17 @@ pip install flask
 
 
 # Configuration
+
+It works out of the box! NO configuration is needed to use it.
+However it is possible to specify some neat things through 
+the config.py file.
+
+
+File: config.py
+
+If not provided, a minimum config file will be automatically created.
+
+
 make a file named config.py,
 WEBROOT
 	if deploying on apache/x-server you probably need to change
@@ -14,25 +25,41 @@ WEBROOT
 
 	WEBROOT = "/path/to/this/folder"
 
+	You can deploy your httpserver to flask.wsgi in this folder. 
+	for apache, mod_wsgi is needed.
+
 
 SECRET_KEY
 	flask sesions needs this key in order to encrypt session state. 
 	make it, and keep it secret!
 
 	SECRET_KEY = "definitively not this"
+	(this will now be created automatically if no config.py exists when running first time.)
 
 
 ggj_url
 	link to your sites jammers.csv download file (saves time)
 
-	ggj_url = 'http://globalgamejam.org/group/24449/jammers.csv'
+	Example:
+		ggj_url = 'http://globalgamejam.org/group/<node-id>/jammers.csv'
 
 
-gforms_url
-	a link to a published google forms url in csv format.
+sources
+	By default there is only one source, jammers.csv for info on the jammers.
+	However, you can specify any number of csv files that will be imported,
+	in the order they are listed. 
 
-	gforms_url = "https://goo.gl/1337.csv"
 
+	Example:
+		sources = [
+			{
+				'file': 'jammers.csv'	
+			},
+			
+			{
+				'url': 'https://goo.gl/forms/xmeoimfeoifm/format=csv', 'fields': 'name-of-file.txt'
+			}
+		]
 
 #################################################
 #	Using Google Forms
@@ -40,7 +67,19 @@ gforms_url
 
 	if using google forms as secondary source of input for the jammers, 
 	one needs to map the fields in the google forms to fields of jammers.csv 
-	(from GGJ.org). This is done with the textfile forms_fields.txt
+	(from GGJ.org). This is done with a textfile,  forms_fields.txt is an example of this. (make another for your needs)
+
+	Then in sources (see above), specify the name of the file like this:
+	Example:
+		sources = [
+			{
+				'file': 'jammers.csv'	
+			},
+			
+			{
+				'url': 'https://goo.gl/forms/xmeoimfeoifm/format=csv', 'fields': 'name-of-file.txt'
+			}
+		]
 
 	it should list the fieldnames per line in the following syntax
 
