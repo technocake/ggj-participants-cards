@@ -24,11 +24,15 @@ if "WEBROOT" in app.config:
 edit_jammer_ui = "\n\r".join(["<a class='update' href='{url}?Username=%(Username)s&main_role={role}'>Change to {role}</a>".format(role=role, url='{url}') for role in classifier.groups])
 
 
-@app.route("/")
-def index():
+@app.route("/2")
+def index2():
 	jamsite = JamSite.load()
 	jamsite.apply_human()
 	return render_template("index.html", jamsite=jamsite)
+
+@app.route("/")
+def index():
+	return render_template("frontpage.svg")
 
 
 @app.route("/import")
