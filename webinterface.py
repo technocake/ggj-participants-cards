@@ -1,14 +1,21 @@
 from flask import Flask, request, Response, redirect, url_for, render_template, flash
 from werkzeug import secure_filename
 
-from make_cards import import_all_jammers, errormsg
+from make_cards import import_all_jammers, errormsg, make_minimum_configuration
 from ggj import JamSite, Jammer
 from template_stuff import render_jammers, render_editable_jammers, render_waiting_list
 import classifier
 
 
 app = Flask(__name__)
-app.config.from_object('config')
+
+try:
+	app.config.from_object('config')
+except:
+	make_minimum_configuration()
+	app.config.from_object('config')
+
+
 if "WEBROOT" in app.config:
 	import os
 	os.chdir(app.config["WEBROOT"])
@@ -120,7 +127,10 @@ def upload_file():
         except:
             import traceback
             return filename + "<pre>" + traceback.format_exc() + "</pre>"
-    import config
+    try:
+    	import config
+    except:
+    	config = None
     ggj_url = config.ggj_url if hasattr(config, 'ggj_url') else ""
     return render_template('upload-file.html', ggj_url=ggj_url)
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding: utf-8
+import os
 import csv
 import sys
 # this module
@@ -29,9 +30,14 @@ missing_jammers_file="""
 )
 
 
-def make_invitation_mail(jammer):
-	from mailer import invitation_message
-	return u"To: %(Email)s" % jammer, invitation_message(jammer.__dict__)
+def make_minimum_configuration():
+	"""
+		Generates the minimum required configuration to run
+		the web-interface out of the box
+	"""
+	SECRET_KEY = ''.join('%02x' % ord(x) for x in os.urandom(16))
+	with open("config.py", "w") as configfile:
+		configfile.write("SECRET_KEY='%s'\n"%SECRET_KEY)
 
 
 def import_jammers(csvfile, fieldnames=None):
@@ -116,8 +122,7 @@ def import_all_jammers(sources=[dict(file='jammers.csv')], fieldnames=None):
 
 def load_sources():
 		""" Will attempt to load sources from config,
-			if config doesn't existt; 
-				returns default
+			returns default sources if config doesn't exist.
 		"""
 		try:
 			import config

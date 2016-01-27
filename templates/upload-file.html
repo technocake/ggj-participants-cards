@@ -2,17 +2,35 @@
 
 {% block body %}
 	<style type="text/css" media="screen">
-			
+    form {margin: 20px;}
+    form p { margin: 40px;}
+    h1{ margin: 20px;}
+		p.explanation {font-size: 1em; max-width: 500px; margin-left: 20px;}	
 	</style>
 	<h1>Upload jammers.csv</h1>
     <form action="{{ url_for('upload_file') }}" method=post enctype=multipart/form-data>
       <p><input type=file name=file>
-         <input type=submit value=Upload>
+         <input type=submit value=Upload></p>
     </form>
 
+    <p>&nbsp;</p>
+    <p class="explanation">
+      This file contains 
+      the information about your site's jammers. 
+    </p>
+
+    <p class="explanation">
+      Download it from your jamsite's global gamejam page. 
+      Click the button [Download Jammer info] 
+      at the bottom, beneath the list of jammers.
+    </p>
+
+
+    {% if ggj_url != "" %}
     <div>
     	<a href="{{ ggj_url }}" target="_blank"> 
     		Download jammers.csv from globalgamejam.org
     	</a>
     </div>
+    {% endif %}
 {% endblock %}

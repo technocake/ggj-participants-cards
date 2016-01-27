@@ -15,6 +15,9 @@
         
     </head>
     <body>
+
+    
+
    {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -28,5 +31,12 @@
         {% block body %}
 
         {% endblock %}
+    <p>&nbsp;</p>
+    
+
+    <!--<ul class="menu">
+      <li> <a href="{{ url_for('index') }}" title="back">Go back</a></li>
+    </ul> !-->
+    
     </body>
 </html>
