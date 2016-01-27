@@ -25,11 +25,14 @@ pip install flask
 ```
 
 # Usage
-From CLI:
+##From CLI:
 put jammers.csv in the folder and
-run `python make_cards.py`
+run 
+```terminal
+python make_cards.py
+```
 
-Web Interface:
+##Web Interface:
 you can also run a web interface for this. 
 `python webinterface.py`
 
