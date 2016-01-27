@@ -14,7 +14,7 @@ Each jammer is automatically classified and color-coded based on the chosen skil
 #Setup
 
  * Download GIT if you don't have it : http://git-scm.com/download
- * Download Python if you don't have it: 
+ * Download Python if you don't have it: https://www.python.org/downloads/release/python-2711/
 
 In terminal run:
 ```terminal
