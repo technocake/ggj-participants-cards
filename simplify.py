@@ -4,7 +4,7 @@ import os
 
 try:#io from right folder.
 	from config import WEBROOT
-	os.chdir(app.config["WEBROOT"])
+	os.chdir(WEBROOT)
 except:
 	pass
 	
