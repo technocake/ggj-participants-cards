@@ -1,5 +1,14 @@
 #!/usr/bin/env python
 #coding: utf-8
+import os
+
+try:#io from right folder.
+	from config import WEBROOT
+	os.chdir(app.config["WEBROOT"])
+except:
+	pass
+	
+
 
 errormsg = dict(
 missing_jammers_file=""" 
