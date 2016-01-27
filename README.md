@@ -12,12 +12,17 @@ Each jammer is automatically classified and color-coded based on the chosen skil
 ![Screenshot](https://raw.github.com/technocake/ggj-participants-cards/master/screenshot.png)
 
 #Setup
-
+In terminal run:
+```terminal
+git clone https://github.com/technocake/ggj-participants-cards
+```
+Then install dependencies:
+```terminal
 pip install requests
 pip install requests-cache
 pip install beautifulsoup4
 pip install flask
-
+```
 
 # Usage
 From CLI:
