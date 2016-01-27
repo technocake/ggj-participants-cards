@@ -25,19 +25,21 @@ pip install flask
 ```
 
 # Usage
-##From CLI:
-put jammers.csv in the folder and
-run 
-```terminal
-python make_cards.py
-```
 
 ##Web Interface:
-you can also run a web interface for this. 
-`python webinterface.py`
+Start the webinterface: 
+```python webinterface.py```
+and upload jammers.csv
 
 It will open the web-page in your browser automatically when ran.
 
+##From CLI:
+Alternatively one can run it as a standalone script. 
+
+put jammers.csv in the folder and run 
+```terminal
+python make_cards.py
+```
 
 #Input
   jammers.csv (downloaded from organizing site)
