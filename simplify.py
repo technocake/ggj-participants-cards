@@ -24,7 +24,7 @@ missing_jammers_file="""
 	at the bottom, beneath the list of jammers.
 	""",
 
-missing_dependecies="""
+missing_dependencies="""
 	Failed to import dependencies, (python modules this script uses).
 	You can install all dependencies by running these 
 	commands in the terminal: (copy, paste, enter)

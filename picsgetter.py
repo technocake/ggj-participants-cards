@@ -8,6 +8,7 @@ try:
 	import requests_cache
 except:
 	print(errormsg['missing_dependencies'])
+	sys.exit(1)
 import hashlib
 
 requests_cache.install_cache('bgj_cache')
