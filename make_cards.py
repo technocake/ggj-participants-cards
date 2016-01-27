@@ -14,6 +14,21 @@ from utils import fetch_csv_from_url, gf_fieldnames
 # at Pilsner and Programming in Bergen #3 2016.
 c = classifier.SkillzClassifier()
 
+errormsg = dict(
+missing_jammers_file=""" 
+	Ah hoy!, forgotten something Mrs/Mr? 
+		-Missing 'jammers.csv'. 
+
+	Make sure 'jammers.csv' is in the same folder as this script and run again.
+
+	This file contains the information about your site's jammers. 
+
+	Download it from your jamsite's global gamejam page. 
+	Click the button [Download Jammer info] at the bottom beneath the list of jammers.
+	"""
+)
+
+
 def make_invitation_mail(jammer):
 	from mailer import invitation_message
 	return u"To: %(Email)s" % jammer, invitation_message(jammer.__dict__)
@@ -153,36 +168,28 @@ if __name__ == '__main__':
 	else:
 		# Load sources from config, if that fails, default.
 		sources = load_sources()
-	
-
-	fieldnames=gf_fieldnames()
-	print("""
-		Starting to create the jammer cards. importing from %d source(s).
-
-		Have yourself a cup of tea!
-		This will take a couple of minutes the first time it is done.
-		(Because it takes a while to fetch the profile pictures)
 		
-		Everything will be cached from now on, 
-		and this should take significantly lesser time on subsequent runs ;).
+	print("""
+	Starting to create the jammer cards. importing from %d source(s).
 
-		The generated file will open automatically in your browser when
-		completed.
-		"""%len(sources))
+	Have yourself a cup of tea!
+	This will take a couple of minutes the first time it is done.
+	(Because it takes a while to fetch the profile pictures)
+	
+	Everything will be cached from now on, 
+	and this should take significantly lesser time on subsequent runs ;).
+
+	The generated file will open automatically in your browser when
+	completed.
+	"""%len(sources))
+
+
 	try:
 		htmlfile = make_cards(sources)
 	except IOError as e:
-		print(""" 
-			Ah hoy!, forgotten something Mrs/Mr? 
-				-Missing 'jammers.csv'. 
+		print(errormsg["missing_jammers_file"])
 
-			Make sure 'jammers.csv' is in the same folder as this script and run again.
 
-			This file contains the information about your site's jammers. 
-		
-			Download it from your jamsite's global gamejam page. 
-			Click the button [Download Jammer info] at the bottom beneath the list of jammers.
-			""")
 	#pedagogics. Yes, python has a webbrowser module built-in. Use it !:)
 	print(""" Done """)
 	webbrowser.open(htmlfile.name)

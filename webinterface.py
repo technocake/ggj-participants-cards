@@ -1,7 +1,7 @@
 from flask import Flask, request, Response, redirect, url_for, render_template, flash
 from werkzeug import secure_filename
 
-from make_cards import import_all_jammers
+from make_cards import import_all_jammers, errormsg
 from ggj import JamSite, Jammer
 from template_stuff import render_jammers, render_editable_jammers, render_waiting_list
 import classifier
@@ -31,6 +31,9 @@ def import_jammers():
 		jamsite = import_all_jammers(load_sources())
 		jamsite.save()
 		flash("Imported. Remember to have a fresh version of jammers.csv from ggj.org uploaded. Click upload jammers.csv to do that.")
+		return redirect(url_for('index'))
+	except IOError:
+		flash(errormsg['missing_jammers_file'])
 		return redirect(url_for('index'))
 	except:
 		import traceback
