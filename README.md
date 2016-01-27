@@ -1,6 +1,13 @@
 # GGJ Card Maker
 
 Generates a sweet html file that can be printed with a card for each jammer in a global game jam site.
+Each jammer is automatically classified and color-coded based on the chosen skillset on GGJ.org.
+
+ * 2D (red)
+ * 3D (dark red)
+ * Programming (blue)
+ * Sound (yellow)
+ * Other (purple)
 
 ![Screenshot](https://raw.github.com/technocake/ggj-participants-cards/master/screenshot.png)
 
@@ -49,11 +56,5 @@ Chrome is recommended, as it lets you turn on the color backgrounds of the skill
 
  
 # Classification
-Btw, it classifies based on the ticked skillsets of the jammers into:
-
- * 2D
- * 3D
- * Programming
- * Sound
- * Other
+Btw, 
  
