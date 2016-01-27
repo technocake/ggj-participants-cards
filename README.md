@@ -28,6 +28,13 @@ pip install beautifulsoup4
 pip install flask
 ```
 
+### Windows
+Some users had an issue with missing lxml, 
+`pip install lxml`
+
+if that doesn't work try:
+`easy_install lxml`
+
 # Usage
 
 ##Web Interface:
