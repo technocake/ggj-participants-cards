@@ -126,8 +126,8 @@ def upload_file():
                 filename = secure_filename(file.filename)
                 filename = 'jammers.csv'
                 file.save(filename)
-                flash('Uploaded %s' % filename)
-                return redirect(url_for('index'))
+                flash('Uploaded %s. Starting the import... (this may take some time the very first time we do this).' % filename)
+                return redirect(url_for('index') + '/?import_after=true')
         except:
             import traceback
             return filename + "<pre>" + traceback.format_exc() + "</pre>"
