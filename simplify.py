@@ -29,7 +29,7 @@ missing_dependencies="""
 	You can install all dependencies by running these 
 	commands in the terminal: (copy, paste, enter)
 
-	%s
+%s
 	"""%open('dependencies.txt').read()
 )
 
