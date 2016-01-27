@@ -28,7 +28,9 @@ pip install flask
 
 ##Web Interface:
 Start the webinterface: 
-```python webinterface.py```
+```terminal
+python webinterface.py
+```
 and upload jammers.csv
 
 It will open the web-page in your browser automatically when ran.
