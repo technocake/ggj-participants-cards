@@ -61,6 +61,13 @@ sources
 			}
 		]
 
+extra
+	Include extra fields from other sources in rendering. 
+	Currently:	'Experience', 'Size' and 'Education'
+	Example:
+		extra=True
+
+
 #################################################
 #	Using Google Forms
 #################################################

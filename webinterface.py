@@ -1,5 +1,5 @@
 import sys
-from simplify import errormsg, make_minimum_configuration, load_sources
+from simplify import errormsg, make_minimum_configuration, load_sources, load_extra
 try:
 	from flask import Flask, request, Response, redirect, url_for, render_template, flash
 	from werkzeug import secure_filename
@@ -71,7 +71,7 @@ def cards():
 	jamsite.apply_human()
 	if not_imported(jamsite):
 		return redirect(url_for('index'))
-	return Response(render_jammers(jamsite.jammers_sorted_by_main_role(with_ticket=True)))
+	return Response(render_jammers(jamsite.jammers_sorted_by_main_role(with_ticket=True), extra=load_extra()))
 
 
 @app.route("/cards")
@@ -81,7 +81,9 @@ def editable_cards():
 	jamsite.apply_human()
 	if not_imported(jamsite):
 		return redirect(url_for('index'))
-	return Response(render_editable_jammers(jamsite.jammers_with_ticket, ui=edit_jammer_ui.format(url=url_for('update_jammer'))))
+	return Response(render_editable_jammers(jamsite.jammers_with_ticket, 
+				ui=edit_jammer_ui.format(url=url_for('update_jammer')), 
+				extra=load_extra()))
 
 
 @app.route("/waiting-list")

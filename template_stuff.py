@@ -141,9 +141,8 @@ template = """
 			%(classifications)s
 		</ul>
 		<img src="%(picture)s" />
-		<h3>T-shirt size: %(Size)s</h3>
-		<p class="experience">%(Experience)s</p>
-		<h4>Education:</h4> %(Education)s
+		
+		{Extra}
 		
 		<h3>Skills:</h3>
 		<ul>
@@ -152,7 +151,15 @@ template = """
 	</div>
 	"""
 
-def render_jammer(jammer):
+
+extra_template = """
+<h3>T-shirt size: %(Size)s</h3>
+		<p class="experience">%(Experience)s</p>
+		<h4>Education:</h4> %(Education)s
+"""
+
+
+def render_jammer(jammer, extra=False):
 	""" Takes a fully propagated jammer and renders """
 	setattr(jammer, "class", render_role(jammer.main_role))
 	setattr(jammer, "classifications", render_classifications(jammer.classifications))
@@ -166,31 +173,34 @@ def render_jammer(jammer):
 	if not hasattr(jammer, "ui"):
 		jammer.ui=""
 	setattr(jammer, "username", jammer.username)
-	return template % jammer.__dict__
+	if extra:
+		# Optionally add more info from other sources 
+		return template.format(Extra=extra_template%jammer) % jammer
+	return template.format(Extra="") % jammer.__dict__
 
 
-def render_jammers(jammers):
+def render_jammers(jammers, extra=False):
 	""" assembles this whole thing together """
 	yield page_head
 	for jammer in jammers:
-		yield render_jammer(jammer)
+		yield render_jammer(jammer, extra)
 	yield page_footer
 
 
-def render_editable_jammers(jammers, ui):
+def render_editable_jammers(jammers, ui, extra=False):
 	""" assembles this whole thing together, adds UI for admin """
 	yield page_head
 	for jammer in jammers:
-		yield render_editable_jammer(jammer, ui) 	
+		yield render_editable_jammer(jammer, ui, extra) 	
 	yield page_footer
 
 
-def render_editable_jammer(jammer, ui):
+def render_editable_jammer(jammer, ui, extra=False):
 	""" 
 		Adds UI for the admin to edit a jammer card 
 	"""
 	jammer.ui = render_ui(ui, jammer)
-	return render_jammer(jammer)
+	return render_jammer(jammer, extra)
 
 def render_ui(ui, jammer):
 	return ui % jammer

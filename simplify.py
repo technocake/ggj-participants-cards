@@ -56,3 +56,12 @@ def load_sources():
 		except:
 			sources = [dict(file='jammers.csv')]
 		return sources
+
+
+def load_extra():
+	""" Load extra field from config or give defualt False back if none"""
+	try:
+		import config
+		return getattr(config, "extra", False)
+	except:
+		return False

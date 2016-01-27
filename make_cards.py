@@ -3,25 +3,25 @@
 import os
 import sys
 from template_stuff import render_jammers
-from simplify import errormsg, make_minimum_configuration, load_sources
+from simplify import errormsg, make_minimum_configuration, load_sources, load_extra
 from importing import import_all_jammers
 
 
-def write_jammer_cards(jammers, filename="jammers.html"):
+def write_jammer_cards(jammers, filename="jammers.html", extra=False):
 	""" Serializes """
 	with open(filename, "w+") as htmlfile:
-		for chunk in render_jammers(jammers):
+		for chunk in render_jammers(jammers, extra):
 			htmlfile.write(chunk)
 	return htmlfile
 
 
-def make_cards(sources=[dict(file='jammers.csv')], fieldnames=None):
+def make_cards(sources=[dict(file='jammers.csv')], fieldnames=None, extra=False):
 	""" Main function. It will import jammers from jammers.csv, then from google forms and build a card for each jammer. 
 
 		Output - jammers.html 
 	"""
 	jamsite = import_all_jammers(sources)
-	htmlfile = write_jammer_cards(jamsite.jammers.values())
+	htmlfile = write_jammer_cards(jamsite.jammers.values(), extra=extra)
 	return htmlfile
 
 
@@ -42,6 +42,8 @@ if __name__ == '__main__':
 							help='Sources of jammer info in csv format. Either files or urls. If none provided, default is jammers.csv')
 	parser.add_argument('--fields', metavar='FIELDNAMES_FILE', type=str, 
 							help='NOT IMPLEMENTED YET.Optionally you can give a file with fieldnames mappings for the source. ')
+	parser.add_argument('--extra', action='store_true', default=None, 
+							help='Add extra information from other sources. Experience and Size fields(Tshirt)')
 	args = parser.parse_args()
 	# Load source from args
 	if type(args.sources) is list:
@@ -57,6 +59,11 @@ if __name__ == '__main__':
 		# Load sources from config, if that fails, default.
 		sources = load_sources()
 		
+		# Add extra fields to rendering.
+		if args.extra is None:
+			extra = load_extra()
+		else:
+			extra = True		
 
 	print("""
 	Starting to create the jammer cards. importing from %d source(s).
@@ -73,8 +80,9 @@ if __name__ == '__main__':
 	"""%len(sources))
 
 
+
 	try:
-		htmlfile = make_cards(sources)
+		htmlfile = make_cards(sources, extra=extra)
 	except IOError as e:
 		print("\n\r"*40)
 		print(errormsg["missing_jammers_file"])
