@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1> Waiting list: </h1>
+
+<ol>
+	{% for j in jammers %}
+		<li> <a href='{{ j.Username }}' target='_blank'>{{ j.Username }}</a> - {{ j.Email }}</li>
+	{% endfor %}
+</ol>
+{% endblock %}
