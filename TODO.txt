@@ -1,0 +1,37 @@
+TODO
+	- Make sure one jammer is one page when printed.
+	- Make sure the profile pics from ggj is big/same size.
+	- A6 size
+	- pdf-generation
+	- Check-in feature / visible on the cards
+	- multiple-page option
+	- Add Partial print support. - mark "Printed" and "Not printed"
+		- Select /deselect jammers for print.
+	- Add smaller card layout? (actual card-size cards)
+	- Assign groups in the tool. 
+
+
+
+######################################
+#	Feedback:
+######################################
+Wolfram, 
+	- There was only one question why some of the avatar icons were small and some were large on the cards.
+
+
+	- Another tiny problem popped up during printing the cards. Some jammers checked almost all of the skill options. As a result the badge was to large to fit on the page.
+
+	- Would be cool if we could simply manually remove some of the skills
+
+	- What I did was printing it first into a pdf file. One badge per page. Then I used Acrobat Reader for actually printing the badges and used the print multiple pages per sheet feature. I printed 4 badges per sheet A4 paper. So the resulting badge was in the format A6.
+
+
+Alberto Rico Zambrana (MálagaJam)
+	Used own card system. 
+	 I'm just saying our cards came without name, so writing it themselves was a nice thing for some people. 
+
+
+Bergen:
+	- We lost control on who had actually showed up and not, and as a result,
+	many groups where made with ghost members (who had signed up in advance, but didn't show up). It was bad for the groups.
+
